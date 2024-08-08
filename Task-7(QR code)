@@ -1,0 +1,113 @@
+# QR Code Generation Process
+
+
+import qrcode
+
+def generate_qr(data, filename):
+
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+
+
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    
+    img = qr.make_image(fill_color="black", back_color="white")
+
+   
+    img.save(filename)
+
+if __name__ == "__main__":
+    data = "https://www.example.com"
+    filename = "example_qr.png"
+    generate_qr(data, filename)
+    print(f"QR code generated and saved as {filename}")
+
+
+
+
+
+# QR Code Decoding Process
+
+
+import cv2
+
+def decode_qr(filename):
+    # Load the image
+    img = cv2.imread(filename)
+
+
+    # Initialize the QR code detector
+    detector = cv2.QRCodeDetector()
+
+
+    # Detect and decode the QR code
+    data, bbox, _ = detector.detectAndDecode(img)
+
+
+    if bbox is not None:
+        print(f"QR code data: {data}")
+        return data
+    else:
+        print("QR code not detected")
+        return None
+
+
+if __name__ == "__main__":
+    filename = "example_qr.png"
+    data = decode_qr(filename)
+    if data:
+        print(f"Decoded data: {data}")
+    else:
+        print("Failed to decode the QR code")
+
+
+
+#Combing QR Code Generation and Decoding Functionalities
+
+import qrcode
+import cv2
+
+
+def generate_qr(data, filename):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save(filename)
+
+
+def decode_qr(filename):
+    img = cv2.imread(filename)
+    detector = cv2.QRCodeDetector()
+    data, bbox, _ = detector.detectAndDecode(img)
+    if bbox is not None:
+        return data
+    else:
+        return None
+
+
+if __name__ == "__main__":
+    data_to_encode = "https://www.example.com"
+    qr_filename = "example_qr.png"
+
+    generate_qr(data_to_encode, qr_filename)
+    print(f"QR code generated and saved as {qr_filename}")
+
+    decoded_data = decode_qr(qr_filename)
+    if decoded_data:
+        print(f"Decoded data: {decoded_data}")
+    else:
+        print("Failed to decode the QR code")
+
+
