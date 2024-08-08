@@ -1,0 +1,42 @@
+import time
+
+
+class CountdownTimer:
+    def __init__(self):
+        self.time_left = 0
+        self.timer_running = False
+
+
+
+    def start_timer(self, seconds):
+        if not self.timer_running:
+            self.time_left = int(seconds)
+            self.countdown()
+
+
+
+    def countdown(self):
+        if self.time_left > 0:
+            mins, secs = divmod(self.time_left, 60)
+            hours, mins = divmod(mins, 60)
+            time_str = f"{hours:02}:{mins:02}:{secs:02}"
+            print(time_str) 
+            self.time_left -= 1
+            self.timer_running = True
+            time.sleep(1) 
+            self.countdown()
+        else:
+            self.timer_running = False
+            print("Time's up! The countdown has finished!") 
+
+
+    def reset_timer(self):
+        self.time_left = 0
+        self.timer_running = False
+        print("00:00:00") 
+
+
+
+if __name__ == "__main__":
+    timer = CountdownTimer()
+    timer.start_timer(10) 
